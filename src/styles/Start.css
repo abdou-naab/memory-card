@@ -1,0 +1,43 @@
+.start-page {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  justify-content: center;
+  gap: clamp(1rem, 6vh, 3rem);
+}
+.start-page h1 {
+  margin: 0;
+  padding: 0;
+  color: white;
+  font-size: clamp(2rem, 8vh, 3.5rem);
+}
+#logoGif {
+  height: 350px;
+}
+.start-page .difficulties {
+  display: flex;
+  gap: 25px;
+}
+.start-page .difficulties button {
+  font-size: clamp(10px, 3.65vw, 28px);
+  padding: min(14px, 2vw) min(18px, 2.8vw);
+  border-radius: 8px;
+  box-shadow: 0 5px 10px #000, 0 -5px 10px #000;
+  cursor: pointer;
+}
+
+/*                  Visual Effects                    */
+.start-page .difficulties button:hover {
+  transform: scale(1.1);
+}
+.start-page .difficulties button:active {
+  transform: scale(0.96);
+}
+
+/*                       Media queries                   */
+@media (max-width: 700px) {
+  #logoGif {
+    height: auto;
+    width: 80%;
+  }
+}

@@ -6,6 +6,7 @@ import {
   mdiMusicOff,
   mdiVolumeHigh,
   mdiVolumeMute,
+  mdiWindowClose,
 } from "@mdi/js";
 import "../styles/Footer.css";
 
@@ -54,7 +55,11 @@ export default function Footer() {
           </button>
         </div>
         <button onClick={() => handleClick(help, setHelp, "help")}>
-          <Icon path={mdiHelp} size={0.9} title="help" />
+          {!help ? (
+            <Icon path={mdiHelp} size={0.9} title="open help" />
+          ) : (
+            <Icon path={mdiWindowClose} size={0.9} title="close help" />
+          )}
         </button>
       </footer>
     </>
