@@ -1,0 +1,33 @@
+footer {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  padding: 0 40px 0;
+}
+footer .sounds button:not(:last-child) {
+  margin-right: 15px;
+}
+footer button {
+  border-radius: 50%;
+  width: 45px;
+  height: 45px;
+  border: none;
+  outline: none;
+
+  position: relative;
+  cursor: pointer;
+}
+footer button svg {
+  position: absolute;
+  top: 50%;
+  left: 50%;
+  transform: translate(-50%, -50%);
+}
+
+/*                  Visual Effects                    */
+footer button:hover {
+  transform: scale(1.1);
+}
+footer button:active {
+  transform: scale(0.96);
+}
