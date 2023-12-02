@@ -1,3 +1,10 @@
+:root {
+  --yellow: #b7a368;
+  --green: #acb768;
+  --browgreen: #806e49;
+  --white: #fffbe3;
+  --creamy: #fff8c8;
+}
 :root,
 body {
   margin: 0;

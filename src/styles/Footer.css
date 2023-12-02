@@ -3,6 +3,16 @@ footer {
   align-items: center;
   justify-content: space-between;
   padding: 0 40px 0;
+
+  transition: transform 1s ease-out 1s;
+  transform: translateY(100%);
+
+  position: sticky;
+  bottom: 0;
+  left: 0;
+}
+footer.loaded {
+  transform: translateY(0);
 }
 footer .sounds button:not(:last-child) {
   margin-right: 15px;
@@ -13,7 +23,7 @@ footer button {
   height: 45px;
   border: none;
   outline: none;
-
+  background-color: var(--yellow);
   position: relative;
   cursor: pointer;
 }

@@ -1,17 +1,23 @@
-import logoGif from "../assets/logo.gif";
+import logo from "../assets/logo.png";
 import "../styles/Start.css";
-export default function Start() {
+
+function handleButtonClick(setGameStarted) {
+  setGameStarted(true);
+}
+export default function StartPage({ loaded, setGameStarted }) {
   return (
     <>
-      <main className="start-page">
-        <img id="logoGif" src={logoGif} alt="remember the heros" />
+      <div className={`start-page ${loaded ? "loaded" : ""}`}>
+        <img id="logo" src={logo} alt="remember the heros" />
         <h1>لعبة الذاكرة</h1>
         <div className="difficulties">
-          <button>سهل</button>
-          <button>عادي</button>
-          <button>صعب</button>
+          <button onClick={() => handleButtonClick(setGameStarted)}>صعب</button>
+          <button onClick={() => handleButtonClick(setGameStarted)}>
+            عادي
+          </button>
+          <button onClick={() => handleButtonClick(setGameStarted)}>سهل</button>
         </div>
-      </main>
+      </div>
     </>
   );
 }

@@ -16,7 +16,7 @@ function handleClick(state, setState, help) {
     //
   }
 }
-export default function Footer() {
+export default function Footer({ loaded }) {
   const [volume, setVolume] = useState(() => {
     let hmc_volume = localStorage.getItem("hmc_volume");
     if (hmc_volume) return JSON.parse(hmc_volume);
@@ -37,7 +37,7 @@ export default function Footer() {
   const [help, setHelp] = useState(false);
   return (
     <>
-      <footer>
+      <footer className={loaded ? "loaded" : ""}>
         <div className="sounds">
           <button onClick={() => handleClick(volume, setVolume)}>
             {volume ? (

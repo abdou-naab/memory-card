@@ -4,14 +4,22 @@
   align-items: center;
   justify-content: center;
   gap: clamp(1rem, 6vh, 3rem);
+
+  transition: transform 1s ease-out;
+  transform: scale(0);
+}
+.start-page.loaded {
+  transform: scale(1);
 }
 .start-page h1 {
   margin: 0;
   padding: 0;
   color: white;
   font-size: clamp(2rem, 8vh, 3.5rem);
+  color: var(--green);
+  text-shadow: 0 4px 8px #000;
 }
-#logoGif {
+#logo {
   height: 350px;
 }
 .start-page .difficulties {
@@ -22,6 +30,9 @@
   font-size: clamp(10px, 3.65vw, 28px);
   padding: min(14px, 2vw) min(18px, 2.8vw);
   border-radius: 8px;
+
+  color: black;
+  background-color: var(--green);
   box-shadow: 0 5px 10px #000, 0 -5px 10px #000;
   cursor: pointer;
 }
@@ -36,7 +47,7 @@
 
 /*                       Media queries                   */
 @media (max-width: 700px) {
-  #logoGif {
+  #logo {
     height: auto;
     width: 80%;
   }
