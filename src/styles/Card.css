@@ -1,0 +1,47 @@
+.card-container {
+  height: 350px;
+  width: 250px;
+  perspective: 2000px;
+}
+.card-container .card-content {
+  height: 100%;
+  width: 100%;
+
+  position: relative;
+  transition: transform 1.3s;
+  transform-style: preserve-3d;
+  -webkit-transform-style: preserve-3d;
+}
+
+.card-container .card-content .front,
+.card-container .card-content .back {
+  border-radius: 1rem;
+  padding: 1rem;
+  height: 100%;
+  width: 100%;
+  box-shadow: 0 0 5px 2px rgb(50, 50, 50, 0.35);
+  position: absolute;
+
+  color: white;
+  background-color: #333333;
+
+  backface-visibility: hidden;
+  -moz-backface-visibility: hidden;
+  -webkit-backface-visibility: hidden;
+}
+
+.card-container.flip > .card-content {
+  transform: rotateY(180deg);
+}
+.card-container .card-content .back {
+  transform: rotateY(180deg);
+}
+
+.card-container .card-glow {
+  border-radius: 1rem;
+  position: absolute;
+  height: 100%;
+  width: 100%;
+  left: 0;
+  top: 0;
+}

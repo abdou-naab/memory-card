@@ -1,3 +1,6 @@
+// import Card from "./Card";
+import EndMsg from "./EndMsg";
+import heros from "../heros";
 import logo from "../assets/logo.png";
 import "../styles/Game.css";
 export default function GamePage() {
@@ -15,7 +18,10 @@ export default function GamePage() {
           </div>
           <img src={logo} alt="remember the heros" />
         </header>
-        <main></main>
+        <main>
+          {/* <Card /> */}
+          <EndMsg hero={heros[0]} />
+        </main>
       </div>
     </>
   );
