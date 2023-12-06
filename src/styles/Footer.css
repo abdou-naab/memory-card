@@ -7,7 +7,7 @@ footer {
   transition: transform 1s ease-out 1s;
   transform: translateY(100%);
 
-  position: sticky;
+  position: static;
   bottom: 0;
   left: 0;
 }

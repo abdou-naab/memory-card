@@ -16,15 +16,21 @@ function App() {
         setTimeout(() => setLoaded(true), 1300)
       );
   }, []);
+
+  const [level, setLevel] = useState({});
   return (
     <>
       {!gameStarted ? (
-        <StartPage loaded={loaded} setGameStarted={setGameStarted} />
+        <StartPage
+          loaded={loaded}
+          setGameStarted={setGameStarted}
+          setLevel={setLevel}
+        />
       ) : (
-        <GamePage setGameStarted={setGameStarted} />
+        <GamePage level={level} setGameStarted={setGameStarted} />
       )}
       <Footer loaded={loaded} />
-      <video id="bg-video" src={bgVideo} autoPlay loop muted></video>
+      <video id="bg-video" src={bgVideo} autoPlay loop={!loaded} muted></video>
     </>
   );
 }

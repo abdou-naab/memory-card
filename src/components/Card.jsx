@@ -1,10 +1,25 @@
-import { useState, useEffect } from "react";
+import { useState, useEffect, useRef } from "react";
 import "../styles/Card.css";
+import { setClickedValue } from "../helpers";
 
-export default function Card() {
+export default function Card({ hero, clickedCardsIds, setClickedCardsIds }) {
   const [tiltStyle, setTiltStyle] = useState({ transform: "", background: "" });
+  const cardRef = useRef(null);
+
+  function handleCardClicked() {
+    setClickedCardsIds([...clickedCardsIds, cardRef.current.dataset.id]);
+    setClickedValue(cardRef.current.dataset.id, true);
+    document.querySelectorAll(".card-container").forEach((card) => {
+      card.classList.add("flip");
+      console.log(card.style);
+      setTimeout(() => {
+        card.classList.remove("flip");
+      }, 2000);
+    });
+  }
+
   const tiltToMouse = (e) => {
-    const bounds = e.currentTarget.getBoundingClientRect();
+    const bounds = cardRef.current.getBoundingClientRect();
     const mouseX = e.clientX;
     const mouseY = e.clientY;
     const center = {
@@ -18,7 +33,7 @@ export default function Card() {
                     ${center.y / 100},
                         ${-center.x / 100},
                         0,
-                        ${Math.log(distance) * 2.6}deg
+                        ${Math.log(distance) * 3.9}deg
                 )
                 `,
       background: `
@@ -26,16 +41,17 @@ export default function Card() {
                     circle at
                     ${center.x * 2 + bounds.width / 2}px
                     ${center.y * 2 + bounds.height / 2}px,
-                    #ffffff55,
+                    #ffffff4c,
                     #0000000f
                 )
                 `,
     });
   };
-  useEffect(() => {
-    const card = document.querySelector(".card-container");
-    const cardGlow = document.querySelector(".card-container .card-glow ");
 
+  useEffect(() => {
+    const card = cardRef.current;
+    const cardGlow = cardRef.current.querySelector(".card-glow ");
+    cardRef.current.style.transitionDuration = "";
     const handleMouseEnter = () => {
       card.addEventListener("mousemove", (e) => {
         tiltToMouse(e);
@@ -49,6 +65,7 @@ export default function Card() {
       card.removeEventListener("mousemove", tiltToMouse);
       setTiltStyle({ ...tiltStyle, background: "" });
     };
+
     card.addEventListener("mouseenter", handleMouseEnter);
     card.addEventListener("mouseleave", handleTiltMouseLeave);
     cardGlow.addEventListener("mouseleave", handleGlowMouseLeave);
@@ -59,14 +76,29 @@ export default function Card() {
       cardGlow.removeEventListener("mouseleave", handleGlowMouseLeave);
     };
   }, []);
+  const [bgPos, setBgPos] = useState("");
+  useEffect(() => {
+    setBgPos(
+      `${Math.floor(Math.random() * 80)}% ${Math.floor(Math.random() * 80)}%`
+    );
+  }, []);
+
   return (
     <>
-      <div className="card-container">
-        <div
-          className="card-content"
-          style={{ transitionDuration: "0.2s", transform: tiltStyle.transform }}
-        >
-          <div className="front">this is in front</div>
+      <div
+        data-id={hero.id}
+        data-name={hero.name}
+        className="card-container"
+        ref={cardRef}
+        style={{ transform: tiltStyle.transform }}
+        onClick={handleCardClicked}
+      >
+        <div className="card-content">
+          <div style={{ backgroundPosition: bgPos }} className="front">
+            <img className="bg" src={hero.img} alt={hero.name} />
+
+            <span>{hero.name}</span>
+          </div>
           <div className="back">this is in back</div>
           <div
             style={{ background: tiltStyle.background }}
@@ -77,3 +109,7 @@ export default function Card() {
     </>
   );
 }
+
+// export default function Card({ hero }) {
+//   return <TiltCard hero={hero} />;
+// }

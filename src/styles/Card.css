@@ -1,33 +1,40 @@
 .card-container {
-  height: 350px;
-  width: 250px;
-  perspective: 2000px;
+  aspect-ratio: 1/1.546;
+  cursor: pointer;
+  width: 170px;
+  perspective: 140000px;
+  overflow: hidden;
+  margin: 20px 0;
 }
 .card-container .card-content {
   height: 100%;
   width: 100%;
-
   position: relative;
-  transition: transform 1.3s;
+  transition: transform;
+  transition-duration: 2s;
+  transition-timing-function: ease-in-out;
   transform-style: preserve-3d;
   -webkit-transform-style: preserve-3d;
 }
-
+.card-container .card-content .front {
+  background: url("../assets/cardBg.png");
+}
 .card-container .card-content .front,
 .card-container .card-content .back {
+  text-align: center;
   border-radius: 1rem;
-  padding: 1rem;
   height: 100%;
   width: 100%;
   box-shadow: 0 0 5px 2px rgb(50, 50, 50, 0.35);
   position: absolute;
-
+  padding: min(10px, 2.4vw);
   color: white;
-  background-color: #333333;
-
   backface-visibility: hidden;
   -moz-backface-visibility: hidden;
   -webkit-backface-visibility: hidden;
+  display: flex;
+  flex-direction: column;
+  gap: clamp(2.5px, 1.3vw, 9px);
 }
 
 .card-container.flip > .card-content {
@@ -37,6 +44,17 @@
   transform: rotateY(180deg);
 }
 
+.card-container .card-content .front img.bg {
+  border-radius: 1rem;
+  height: 85%;
+  width: 100%;
+  object-fit: fill;
+}
+.card-container .card-content .front span {
+  font-weight: bold;
+  font-size: clamp(0.92rem, 1.2vw, 1.2rem);
+  text-shadow: 0 5px 0.5em black, 5px 0 0.5em black;
+}
 .card-container .card-glow {
   border-radius: 1rem;
   position: absolute;
@@ -44,4 +62,15 @@
   width: 100%;
   left: 0;
   top: 0;
+}
+
+@media (max-width: 660px) {
+  .card-container {
+    width: max(25.5vw, 128px);
+  }
+}
+@media (max-width: 1260px) {
+  .card-container {
+    width: 168px;
+  }
 }

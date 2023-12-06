@@ -1,21 +1,37 @@
 import logo from "../assets/logo.png";
 import "../styles/Start.css";
 
-function handleButtonClick(setGameStarted) {
-  setGameStarted(true);
-}
-export default function StartPage({ loaded, setGameStarted }) {
+export default function StartPage({ loaded, setGameStarted, setLevel }) {
   return (
     <>
       <div className={`start-page ${loaded ? "loaded" : ""}`}>
         <img id="logo" src={logo} alt="remember the heros" />
         <h1>لعبة الذاكرة</h1>
         <div className="difficulties">
-          <button onClick={() => handleButtonClick(setGameStarted)}>صعب</button>
-          <button onClick={() => handleButtonClick(setGameStarted)}>
+          <button
+            onClick={() => {
+              setGameStarted(true);
+              setLevel({ show: 7, total: 18 });
+            }}
+          >
+            صعب
+          </button>
+          <button
+            onClick={() => {
+              setGameStarted(true);
+              setLevel({ show: 5, total: 10 });
+            }}
+          >
             عادي
           </button>
-          <button onClick={() => handleButtonClick(setGameStarted)}>سهل</button>
+          <button
+            onClick={() => {
+              setGameStarted(true);
+              setLevel({ show: 3, total: 6 });
+            }}
+          >
+            سهل
+          </button>
         </div>
       </div>
     </>
