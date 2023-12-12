@@ -22,20 +22,22 @@ export function setClickedValue(id, boolValue) {
     break;
   }
 }
-export function getNewHero(ids = null) {
-  let herosShuffled = shuffle(heros);
-  for (let hero of herosShuffled) {
-    if (!hero.clicked && ((ids && !ids.includes(hero.id)) || !ids)) return hero;
+export function resetClickedValue() {
+  for (let hero of heros) {
+    hero.clicked = false;
   }
-  return null;
 }
-export function getViewedHero(ids = null) {
-  let herosShuffled = shuffle(heros);
-  for (let hero of herosShuffled) {
-    if (hero.clicked && ((ids && !ids.includes(hero.id)) || !ids)) return hero;
+export function getNewHeroNotInSet(viewedCardsIds) {
+  let herosFiltered = shuffle(
+    heros.filter((hero) => !viewedCardsIds.has(hero.id))
+  );
+  if (herosFiltered.length === 0) {
+    return null; // No new heroes
   }
-  return null;
+  let randomIndex = Math.floor(Math.random() * herosFiltered.length);
+  return herosFiltered[randomIndex];
 }
+
 export function getHerosIds(heros) {
   let ids = [];
   for (let hero of heros) {
@@ -43,12 +45,75 @@ export function getHerosIds(heros) {
   }
   return ids;
 }
-export function getRandomHero(heroList) {
-  let i = Math.floor(Math.random() * heroList.length);
-  return heroList[i];
+export function getHerosFromIds(ids) {
+  return heros.filter((hero) => {
+    ids.includes(hero.id);
+  });
+}
+export function getNRandomElement(array, n) {
+  array = shuffle(Array.from(array));
+  let indexes = [];
+  while (indexes.length < n) {
+    let i = Math.floor(Math.random() * array.length);
+    if (!indexes.includes(i)) indexes.push(i);
+  }
+  return indexes.map((i) => array[i]);
 }
 
-// export function getRoundHeros (clickedHeros, displayedHeros) {
-//     // let n = parseInt(displayed / 3)
+export function calculateCardDistribution(totalShown) {
+  let clickedCards = Math.floor(
+    totalShown * parseFloat(Math.random().toFixed(2))
+  );
+  let viewedCards = Math.floor(
+    totalShown * parseFloat(Math.random().toFixed(2))
+  );
+  let newCards = Math.floor(totalShown * parseFloat(Math.random().toFixed(2)));
 
-// }
+  if (newCards === 0) newCards++;
+
+  let totalCalculated = clickedCards + viewedCards + newCards;
+
+  while (totalCalculated > totalShown) {
+    let rand = Math.floor(Math.random() * 10);
+    if (rand > 4 && viewedCards > 1) viewedCards--;
+    else if (clickedCards > 1) clickedCards--;
+    else newCards--;
+    totalCalculated--;
+  }
+  while (totalCalculated < totalShown) {
+    let rand = Math.floor(Math.random() * 10);
+    if (rand > 7) clickedCards++;
+    else if (rand > 3) viewedCards++;
+    else newCards++;
+    totalCalculated++;
+  }
+  if (totalShown * 0.66 < newCards) {
+    let rand = Math.floor(Math.random() * 10);
+    if (rand > 2 && rand < 8) clickedCards++;
+    else viewedCards++;
+    newCards--;
+  }
+  return {
+    clicked: clickedCards,
+    viewed: viewedCards,
+    new: newCards,
+  };
+}
+
+export function getChooosedHerosList(n, clickedCardsIds, viewedCardsIds) {
+  let cardsNumber = calculateCardDistribution(n);
+
+  let clickedCards = getHerosFromIds(
+    getNRandomElement(clickedCardsIds, cardsNumber.clicked)
+  );
+  let newCards = [];
+  for (let i = 0; i < cardsNumber.new; i++) {
+    newCards.push(getNewHeroNotInSet(viewedCardsIds));
+  }
+  let viewedCards = getHerosFromIds(
+    getNRandomElement(viewedCardsIds, cardsNumber.viewed)
+  );
+  let herosChosen = [...clickedCards, ...newCards, ...viewedCards];
+
+  return shuffle(herosChosen);
+}

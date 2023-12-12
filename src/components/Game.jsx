@@ -1,41 +1,88 @@
-/* eslint-disable no-unused-vars */
 import Card from "./Card";
-import { getNewHero, getHerosIds } from "../helpers";
-// import EndMsg from "./EndMsg";
+import { getNRandomElement, getHerosIds } from "../helpers";
+import { setClickedValue, resetClickedValue } from "../helpers";
+
 import heros from "../heros";
-import { useState, useEffect } from "react";
+// import EndMsg from "./EndMsg";
+import { useEffect, useState } from "react";
 import logo from "../assets/logo.png";
 import "../styles/Game.css";
 
 export default function GamePage({ level }) {
-  // eslint-disable-next-line no-unused-vars
-  const [score, setScore] = useState(() => {
-    let scoreObj = { current: 0, best: 0 };
-    let score = localStorage.getItem("score");
-    if (score) {
-      score = JSON.parse(score);
-      scoreObj.current = score.current;
-      scoreObj.best = score.best;
-    }
-
-    return scoreObj;
-  });
-  useEffect(() => {
-    localStorage.setItem("score", JSON.stringify(score));
-  }, [score]);
-
-  // show, total
-  // eslint-disable-next-line no-unused-vars
-  const [choosedHeros, setChoosedHeros] = useState(() => {
-    let array = [];
-    for (let i = 0; i < level.show; i++) {
-      array.push(getNewHero(getHerosIds(array)));
-    }
-    return array;
-  });
-
+  const startHeros = getNRandomElement(heros, level.show);
+  const [score, setScore] = useState({ current: 0, best: 0 });
   const [clickedCardsIds, setClickedCardsIds] = useState([]);
-  const [viewedCardsIds, setViewedCardsIds] = useState([]);
+  const [viewedCardsIds, setViewedCardsIds] = useState(
+    new Set(getHerosIds(startHeros))
+  );
+  const cards = Array.from({ length: level.show }, (_, i) => i);
+  const [cardsAreFlipped, setCardsAreFlipped] = useState(false);
+  // eslint-disable-next-line no-unused-vars
+  const [choosedHeros, setChoosedHeros] = useState(startHeros);
+  useEffect(() => {
+    if (choosedHeros != startHeros) {
+      console.log("%cInside choosedHeros useEffect", "color:green;");
+      let newViewedCardsIds = new Set(viewedCardsIds);
+      choosedHeros.forEach((hero) => newViewedCardsIds.add(hero.id));
+      setViewedCardsIds(newViewedCardsIds);
+    }
+  }, [choosedHeros]);
+
+  useEffect(() => {
+    if (clickedCardsIds.length) {
+      document.querySelectorAll(".card-container").forEach((card) => {
+        card.querySelector(".card-content").style.transform = "rotateY(180deg)";
+      });
+
+      // let nextRoundHeros = getChooosedHerosList(
+      //   level.show,
+      //   clickedCardsIds,
+      //   viewedCardsIds
+      // );
+      // console.log("nextRoundHeros", nextRoundHeros);
+      setTimeout(() => {
+        setCardsAreFlipped(false);
+      }, 4000);
+      setTimeout(() => {
+        setScore(() => {
+          const newCurrent = score.current + 1;
+          const newBest = newCurrent > score.best ? newCurrent : score.best;
+          return { current: newCurrent, best: newBest };
+        });
+
+        setCardsAreFlipped(true);
+        document.querySelectorAll(".card-container").forEach((card) => {
+          card.querySelector(".card-content").style.transform = "rotateY(0deg)";
+        });
+      }, 2000);
+    }
+  }, [clickedCardsIds]);
+  useEffect(() => {
+    if (cardsAreFlipped) {
+      let threeHeros = [];
+      let i = 0;
+      for (let hero of heros) {
+        if (!viewedCardsIds.has(hero.id) && i < 3) {
+          threeHeros.push(hero);
+          i++;
+        }
+      }
+      setChoosedHeros(threeHeros);
+    }
+  }, [cardsAreFlipped]);
+  function handleCardClicked(cardRef) {
+    if (!clickedCardsIds.includes(cardRef.current.dataset.id)) {
+      setClickedCardsIds([...clickedCardsIds, cardRef.current.dataset.id]);
+      console.log(
+        `${cardRef.current.dataset.name}; cardsClicked changed:`,
+        clickedCardsIds
+      );
+      setClickedValue(cardRef.current.dataset.id, true);
+    } else {
+      resetClickedValue();
+      console.log("we reset the heros");
+    }
+  }
   return (
     <>
       <div className="game-page">
@@ -52,13 +99,11 @@ export default function GamePage({ level }) {
         </header>
         <main>
           <div className="cards-container">
-            {choosedHeros.map((hero) => (
+            {cards.map((i) => (
               <Card
-                key={hero.id}
-                hero={hero}
-                clickedCardsIds={clickedCardsIds}
-                setClickedCardsIds={setClickedCardsIds}
-                setChoosedHeros={setChoosedHeros}
+                key={i}
+                hero={choosedHeros[i]}
+                onclick={(cardRef) => handleCardClicked(cardRef)}
               />
             ))}
           </div>

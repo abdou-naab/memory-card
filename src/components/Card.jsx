@@ -1,21 +1,13 @@
 import { useState, useEffect, useRef } from "react";
 import "../styles/Card.css";
-import { setClickedValue } from "../helpers";
+// import { setClickedValue, resetClickedValue } from "../helpers";
 
-export default function Card({ hero, clickedCardsIds, setClickedCardsIds }) {
+export default function Card({ hero, onclick }) {
   const [tiltStyle, setTiltStyle] = useState({ transform: "", background: "" });
   const cardRef = useRef(null);
 
   function handleCardClicked() {
-    setClickedCardsIds([...clickedCardsIds, cardRef.current.dataset.id]);
-    setClickedValue(cardRef.current.dataset.id, true);
-    document.querySelectorAll(".card-container").forEach((card) => {
-      card.classList.add("flip");
-      console.log(card.style);
-      setTimeout(() => {
-        card.classList.remove("flip");
-      }, 2000);
-    });
+    onclick(cardRef);
   }
 
   const tiltToMouse = (e) => {
@@ -109,7 +101,3 @@ export default function Card({ hero, clickedCardsIds, setClickedCardsIds }) {
     </>
   );
 }
-
-// export default function Card({ hero }) {
-//   return <TiltCard hero={hero} />;
-// }
