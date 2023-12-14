@@ -52,14 +52,21 @@ function App() {
   }, [anasheed, currentNasheed]);
 
   useEffect(() => {
+    console.log("Load event fired");
     window.addEventListener("load", () => {
       console.log("%cgame started", "color:red; font-size:1rem");
-      setTimeout(() => setLoaded(true), 1300);
+      setTimeout(() => {
+        setLoaded(true),
+          console.log("%cset To True", "color:red; font-size:1rem");
+      }, 1300);
     });
     return () =>
       window.removeEventListener("load", () => {
         console.log("%cgame started", "color:red; font-size:1rem");
-        setTimeout(() => setLoaded(true), 1300);
+        setTimeout(() => {
+          setLoaded(true),
+            console.log("%cset To True", "color:red; font-size:1rem");
+        }, 1300);
       });
   }, []);
 
