@@ -26,9 +26,8 @@
   display: flex;
 
   flex-direction: column;
-  justify-content: center;
   align-items: center;
-  gap: min(1rem, 2.5vw);
+  gap: min(0.5rem, 1.7vw);
   overflow-y: auto;
 }
 .end-message.win {
@@ -81,6 +80,6 @@
   .end-message {
     width: auto;
     max-width: 80%;
-    height: clamp(400px, 70vh, 90%);
+    height: clamp(450px, 85vh, 95%);
   }
 }

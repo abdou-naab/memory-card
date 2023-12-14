@@ -57,13 +57,16 @@ export function getHerosFromIds(ids) {
   return val;
 }
 export function getNRandomElement(array, n) {
-  array = shuffle(Array.from(array));
-  let indexes = [];
-  while (indexes.length < n) {
-    let i = Math.floor(Math.random() * array.length);
-    if (!indexes.includes(i)) indexes.push(i);
+  if (!array.length || array.length <= n) return array;
+  else {
+    array = shuffle(Array.from(array));
+    let indexes = [];
+    while (indexes.length < n) {
+      let i = Math.floor(Math.random() * array.length);
+      if (!indexes.includes(i)) indexes.push(i);
+    }
+    return indexes.map((i) => array[i]);
   }
-  return indexes.map((i) => array[i]);
 }
 
 export function calculateCardDistribution(totalShown) {
@@ -106,49 +109,70 @@ export function calculateCardDistribution(totalShown) {
   };
 }
 
+export function addOrRemoveUnnecessaryCardsClicked(
+  heros, //['dshkxrxn1is', 'iq8lxh5veqn', 'rrbb70s953b']
+  clickedCards2Keep, // 2
+  clickedHeros // ['rrbb70s953b]
+) {
+  let clickedFound = [];
+
+  heros = heros.filter((hero) => {
+    if (hero.clicked) {
+      clickedFound.push(hero.id);
+      if (clickedFound.length > clickedCards2Keep) return false;
+      else true;
+    }
+  });
+  let numberToCompleteTheClickedHeros = clickedFound.length;
+  clickedHeros = shuffle(clickedHeros);
+  while (
+    numberToCompleteTheClickedHeros < clickedCards2Keep &&
+    clickedHeros.length
+  ) {
+    let temp = clickedHeros.pop();
+    if (!clickedFound.includes(temp.id)) heros.push(temp);
+  }
+  return heros;
+}
+export function addOrUpdateWithNewHeros(herosChosen, newHeros, total) {
+  while (herosChosen.length < total && newHeros.length) {
+    herosChosen.push(newHeros.pop());
+  }
+  if (herosChosen.length == total && newHeros.length == 0) return herosChosen;
+  else if (herosChosen.length == total && newHeros.length) {
+    herosChosen = shuffle(herosChosen);
+    while (newHeros.length) {
+      herosChosen = herosChosen.map((hero) => {
+        if (hero.clicked) return hero;
+        else return newHeros.pop();
+      });
+    }
+  } else return herosChosen;
+}
 export function getChooosedHerosList(n, clickedCardsIds, viewedCardsIds) {
   let cardsNumber = calculateCardDistribution(n);
 
-  let newCards = getNewHerosNotInSet(cardsNumber.new, viewedCardsIds);
-
-  let clickedCardsMissing = cardsNumber.clicked - clickedCardsIds.length;
-  let roundClickedCardsIds;
-  if (clickedCardsMissing > 0) {
-    roundClickedCardsIds = clickedCardsIds;
-    roundClickedCardsIds = roundClickedCardsIds.concat(
-      getNRandomElement(Array.from(viewedCardsIds), clickedCardsMissing)
-    );
-  } else if (clickedCardsMissing == 0) {
-    roundClickedCardsIds = clickedCardsIds;
-  } else {
-    roundClickedCardsIds = getNRandomElement(
-      clickedCardsIds,
-      cardsNumber.clicked
-    );
-  }
-  let clickedCards = getHerosFromIds(roundClickedCardsIds);
-
-  let roundViewedCardsIds = getNRandomElement(
-    Array.from(viewedCardsIds).filter((i) => !roundClickedCardsIds.includes(i)),
-    cardsNumber.viewed
+  // the beginning the returning heros to random viewedCards
+  let herosChosen = getHerosFromIds(
+    getNRandomElement(Array.from(viewedCardsIds), n)
   );
-  let viewedCards = getHerosFromIds(roundViewedCardsIds);
-
-  let newCardsMissing = cardsNumber.new - newCards.length;
-  if (newCardsMissing > 0) {
-    newCards = newCards.concat(
-      getNRandomElement(
-        Array.from(viewedCardsIds).filter(
-          (i) =>
-            !roundClickedCardsIds.includes(i) &&
-            !roundViewedCardsIds.includes(i)
-        ),
-        newCardsMissing
-      )
+  let newHeros = getNewHerosNotInSet(cardsNumber.new, viewedCardsIds);
+  let clickedHeros = getHerosFromIds(
+    getNRandomElement(clickedCardsIds, cardsNumber.clicked)
+  );
+  herosChosen = addOrRemoveUnnecessaryCardsClicked(
+    herosChosen,
+    cardsNumber.clicked,
+    clickedHeros
+  );
+  herosChosen = addOrUpdateWithNewHeros(herosChosen, newHeros, n);
+  if (herosChosen.length < n) {
+    let temp = getNewHerosNotInSet(
+      n - herosChosen.length,
+      new Set(getHerosIds(herosChosen))
     );
+    herosChosen = herosChosen.concat(temp);
   }
-
-  let herosChosen = [...clickedCards, ...newCards, ...viewedCards];
 
   return shuffle(herosChosen);
 }
