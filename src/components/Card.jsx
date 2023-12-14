@@ -14,19 +14,22 @@ export default function Card({ hero, onclick }) {
   const tiltToMouse = (e) => {
     const bounds = cardRef.current.getBoundingClientRect();
     let mouseX, mouseY;
+
     if (isMobile) {
       mouseX = e.touches[0].clientX;
       mouseY = e.touches[0].clientY;
+      console.log("we are at :", mouseX, " - ", mouseY);
     } else {
       mouseX = e.clientX;
       mouseY = e.clientY;
-      const center = {
-        x: mouseX - bounds.x - bounds.width / 2,
-        y: mouseY - bounds.y - bounds.height / 2,
-      };
-      const distance = Math.sqrt(center.x ** 2 + center.y ** 2);
-      setTiltStyle({
-        transform: `
+    }
+    const center = {
+      x: mouseX - bounds.x - bounds.width / 2,
+      y: mouseY - bounds.y - bounds.height / 2,
+    };
+    const distance = Math.sqrt(center.x ** 2 + center.y ** 2);
+    setTiltStyle({
+      transform: `
                 rotate3d(
                     ${center.y / 100},
                         ${-center.x / 100},
@@ -34,7 +37,7 @@ export default function Card({ hero, onclick }) {
                         ${Math.log(distance) * 3.9}deg
                 )
                 `,
-        background: `
+      background: `
                 radial-gradient(
                     circle at
                     ${center.x * 2 + bounds.width / 2}px
@@ -43,48 +46,73 @@ export default function Card({ hero, onclick }) {
                     #0000000c
                 )
                 `,
-      });
-    }
+    });
   };
   useEffect(() => {
+    console.log("isMobile", isMobile);
+
     const card = cardRef.current;
     const cardGlow = cardRef.current.querySelector(".card-glow ");
     cardRef.current.style.transitionDuration = "";
     const handleMouseEnter = () => {
-      if (!isMobile) card.addEventListener("mousemove", (e) => tiltToMouse(e));
-      else card.addEventListener("touchmove", (e) => tiltToMouse(e));
+      if (!isMobile)
+        card.addEventListener("mousemove", tiltToMouse, { passive: false });
+      else card.addEventListener("touchmove", tiltToMouse, { passive: false });
     };
     const handleTiltMouseLeave = () => {
       if (!isMobile)
-        card.removeEventListener("mousemove", (e) => tiltToMouse(e));
-      else card.removeEventListener("touchmove", (e) => tiltToMouse(e));
+        card.removeEventListener("mousemove", tiltToMouse, { passive: false });
+      else
+        card.removeEventListener("touchmove", tiltToMouse, { passive: false });
       setTiltStyle({ ...tiltStyle, transform: "" });
     };
     const handleGlowMouseLeave = () => {
-      if (!isMobile) card.removeEventListener("mousemove", tiltToMouse);
-      else card.removeEventListener("touchmove", tiltToMouse);
+      if (!isMobile)
+        card.removeEventListener("mousemove", tiltToMouse, { passive: false });
+      else
+        card.removeEventListener("touchmove", tiltToMouse, { passive: false });
       setTiltStyle({ ...tiltStyle, background: "" });
     };
 
     if (isMobile) {
-      card.addEventListener("touchstart", handleMouseEnter);
-      card.addEventListener("touchend", handleTiltMouseLeave);
-      cardGlow.addEventListener("touchend", handleGlowMouseLeave);
+      card.addEventListener("touchstart", handleMouseEnter, { passive: false });
+      card.addEventListener("touchend", handleTiltMouseLeave, {
+        passive: false,
+      });
+      cardGlow.addEventListener("touchend", handleGlowMouseLeave, {
+        passive: false,
+      });
     } else {
-      card.addEventListener("mouseenter", handleMouseEnter);
-      card.addEventListener("mouseleave", handleTiltMouseLeave);
-      cardGlow.addEventListener("mouseleave", handleGlowMouseLeave);
+      card.addEventListener("mouseenter", handleMouseEnter, { passive: false });
+      card.addEventListener("mouseleave", handleTiltMouseLeave, {
+        passive: false,
+      });
+      cardGlow.addEventListener("mouseleave", handleGlowMouseLeave, {
+        passive: false,
+      });
     }
 
     return () => {
       if (isMobile) {
-        card.removeEventListener("touchstart", handleMouseEnter);
-        card.removeEventListener("touchend", handleTiltMouseLeave);
-        cardGlow.removeEventListener("touchend", handleGlowMouseLeave);
+        card.removeEventListener("touchstart", handleMouseEnter, {
+          passive: false,
+        });
+        card.removeEventListener("touchend", handleTiltMouseLeave, {
+          passive: false,
+        });
+        cardGlow.removeEventListener("touchend", handleGlowMouseLeave, {
+          passive: false,
+        });
       } else {
-        card.removeEventListener("mouseenter", handleMouseEnter);
-        card.removeEventListener("mouseleave", handleTiltMouseLeave);
-        cardGlow.removeEventListener("mouseleave", handleGlowMouseLeave);
+        card.removeEventListener("mouseenter", handleMouseEnter, {
+          passive: false,
+        });
+        card.removeEventListener("mouseleave", handleTiltMouseLeave, {
+          passive: false,
+        });
+        cardGlow.removeEventListener("mouseleave", handleGlowMouseLeave, {
+          passive: false,
+        });
       }
     };
   }, []);
