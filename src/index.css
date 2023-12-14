@@ -1,3 +1,37 @@
+@font-face {
+  font-family: "Marhey";
+  src: url("../src/assets/Marhey/static/Marhey-Regular.ttf") format("truetype");
+  font-weight: normal;
+  font-style: normal;
+}
+
+@font-face {
+  font-family: "Marhey";
+  src: url("../src/assets/Marhey/static/Marhey-Bold.ttf") format("truetype");
+  font-weight: bold;
+  font-style: normal;
+}
+
+@font-face {
+  font-family: "Marhey";
+  src: url("../src/assets/Marhey/static/Marhey-Light.ttf") format("truetype");
+  font-weight: lighter;
+  font-style: normal;
+}
+
+@font-face {
+  font-family: "Marhey";
+  src: url("../src/assets/Marhey/static/Marhey-Medium.ttf") format("truetype");
+  font-weight: 500;
+  font-style: normal;
+}
+
+@font-face {
+  font-family: "Marhey";
+  src: url("../src/assets/Marhey/static/Marhey-SemiBold.ttf") format("truetype");
+  font-weight: 600;
+  font-style: normal;
+}
 :root {
   --yellow: #b7a368;
   --green: #acb768;
@@ -18,4 +52,5 @@ body {
   display: grid;
   grid-template-rows: 9fr 1fr;
   min-height: 100dvh;
+  font-family: "Marhey", system-ui, -apple-system, Oxygen, sans-serif;
 }

@@ -9,3 +9,37 @@
   object-position: center;
   filter: brightness(85%);
 }
+
+#info-popup {
+  direction: rtl;
+  display: none;
+  position: fixed;
+  right: 90px;
+  bottom: 0;
+  z-index: 4;
+  transform: translateY(-35%);
+  margin-left: 40px;
+}
+#info-popup.active {
+  display: block;
+  animation: popup-up 1.5s;
+}
+#info-popup p {
+  margin: 0 0 1.2rem;
+  background-color: var(--creamy);
+  padding: 8px;
+  border-radius: 6px;
+  width: 60%;
+  color: var(--browgreen);
+  direction: rtl;
+}
+@keyframes popup-up {
+  from {
+    opacity: 0;
+    transform: translateY(100%);
+  }
+  to {
+    opacity: 1;
+    transform: translateY(-35%);
+  }
+}

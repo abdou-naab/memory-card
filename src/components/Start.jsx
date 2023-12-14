@@ -1,7 +1,14 @@
 import logo from "../assets/logo.png";
 import "../styles/Start.css";
-
-export default function StartPage({ loaded, setGameStarted, setLevel }) {
+import heros from "../heros";
+import clickAudio from "../assets/sword-click.mp3";
+export default function StartPage({
+  loaded,
+  setGameStarted,
+  setLevel,
+  useClickAudio,
+}) {
+  const playSound = useClickAudio(clickAudio);
   return (
     <>
       <div className={`start-page ${loaded ? "loaded" : ""}`}>
@@ -11,7 +18,8 @@ export default function StartPage({ loaded, setGameStarted, setLevel }) {
           <button
             onClick={() => {
               setGameStarted(true);
-              setLevel({ show: 7, total: 18 });
+              setLevel({ show: 7, total: heros.length });
+              playSound();
             }}
           >
             صعب
@@ -19,7 +27,8 @@ export default function StartPage({ loaded, setGameStarted, setLevel }) {
           <button
             onClick={() => {
               setGameStarted(true);
-              setLevel({ show: 5, total: 10 });
+              setLevel({ show: 5, total: 11 });
+              playSound();
             }}
           >
             عادي
@@ -27,7 +36,8 @@ export default function StartPage({ loaded, setGameStarted, setLevel }) {
           <button
             onClick={() => {
               setGameStarted(true);
-              setLevel({ show: 3, total: 6 });
+              setLevel({ show: 3, total: 7 });
+              playSound();
             }}
           >
             سهل

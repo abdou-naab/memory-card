@@ -34,7 +34,7 @@ export default function Card({ hero, onclick }) {
                     ${center.x * 2 + bounds.width / 2}px
                     ${center.y * 2 + bounds.height / 2}px,
                     #ffffff4c,
-                    #0000000f
+                    #0000000c
                 )
                 `,
     });
@@ -83,7 +83,7 @@ export default function Card({ hero, onclick }) {
         className="card-container"
         ref={cardRef}
         style={{ transform: tiltStyle.transform }}
-        onClick={handleCardClicked}
+        onClick={(e) => handleCardClicked(e)}
       >
         <div className="card-content">
           <div style={{ backgroundPosition: bgPos }} className="front">
@@ -91,7 +91,7 @@ export default function Card({ hero, onclick }) {
 
             <span>{hero.name}</span>
           </div>
-          <div className="back">this is in back</div>
+          <div className="back"></div>
           <div
             style={{ background: tiltStyle.background }}
             className="card-glow"

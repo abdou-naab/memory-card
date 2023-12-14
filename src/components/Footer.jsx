@@ -9,32 +9,32 @@ import {
   mdiWindowClose,
 } from "@mdi/js";
 import "../styles/Footer.css";
+import clickAudio from "../assets/sword-click.mp3";
 
-function handleClick(state, setState, help) {
-  setState(!state);
-  if (help && help == "help") {
-    //
+export default function Footer({
+  loaded,
+  useClickAudio,
+  volume,
+  anasheed,
+  setVolume,
+  setAnasheed,
+}) {
+  // sounds
+  const playSound = useClickAudio(clickAudio);
+  function handleClick(state, setState) {
+    setState(!state);
+    playSound();
   }
-}
-export default function Footer({ loaded }) {
-  const [volume, setVolume] = useState(() => {
-    let hmc_volume = localStorage.getItem("hmc_volume");
-    if (hmc_volume) return JSON.parse(hmc_volume);
-    return true;
-  });
-  const [anasheed, setAnasheed] = useState(() => {
-    let hmc_anasheed = localStorage.getItem("hmc_anasheed");
-    if (hmc_anasheed) return JSON.parse(hmc_anasheed);
-    return true;
-  });
+
   useEffect(() => {
     localStorage.setItem("hmc_volume", JSON.stringify(volume));
   }, [volume]);
-  useEffect(() => {
-    localStorage.setItem("hmc_anasheed", JSON.stringify(anasheed));
-  }, [anasheed]);
 
   const [help, setHelp] = useState(false);
+  useEffect(() => {
+    if (help) document.getElementById("info-popup").classList.add("active");
+    else document.getElementById("info-popup").classList.remove("active");
+  }, [help]);
   return (
     <>
       <footer className={loaded ? "loaded" : ""}>
@@ -54,7 +54,7 @@ export default function Footer({ loaded }) {
             )}
           </button>
         </div>
-        <button onClick={() => handleClick(help, setHelp, "help")}>
+        <button onClick={() => handleClick(help, setHelp)}>
           {!help ? (
             <Icon path={mdiHelp} size={0.9} title="open help" />
           ) : (
