@@ -5,6 +5,8 @@
   perspective: 140000px;
   overflow: hidden;
   margin: 20px 0;
+  touch-action: none;
+  -ms-touch-action: none;
 }
 .card-container .card-content {
   height: 100%;
@@ -14,6 +16,8 @@
 
   transform-style: preserve-3d;
   -webkit-transform-style: preserve-3d;
+  touch-action: none;
+  -ms-touch-action: none;
 }
 .card-container .card-content .front {
   background: url("../assets/cardBg.png");
