@@ -68,7 +68,16 @@ function App() {
 
     return toggle;
   };
-
+  useEffect(() => {
+    let video = document.createElement("video");
+    video.id = "bg-video";
+    video.src = bgVideo;
+    video.autoplay = true;
+    video.loop = !gameStarted;
+    video.muted = true;
+    document.body.appendChild(video);
+    return () => document.getElementById("bg-video").remove();
+  }, [gameStarted]);
   const [level, setLevel] = useState({});
   return (
     <>
@@ -104,13 +113,7 @@ function App() {
         setVolume={setVolume}
         setAnasheed={setAnasheed}
       />
-      <video
-        id="bg-video"
-        src={bgVideo}
-        autoPlay
-        loop={!gameStarted}
-        muted
-      ></video>
+
       <audio id="nasheed" autoPlay></audio>
     </>
   );
