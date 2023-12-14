@@ -38,13 +38,13 @@
   --browgreen: #806e49;
   --white: #fffbe3;
   --creamy: #fff8c8;
-  background-color: #806e49;
+  background-color: #b7a368;
 }
 :root,
 body {
   margin: 0;
   padding: 0;
-  height: 100vh;
+  height: 100%;
 }
 * {
   box-sizing: border-box;
