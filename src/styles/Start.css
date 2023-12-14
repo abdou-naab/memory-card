@@ -3,7 +3,7 @@
   flex-direction: column;
   align-items: center;
   justify-content: center;
-  gap: clamp(1rem, 6vh, 3rem);
+  gap: clamp(3px, 3vh, 1.2rem);
 
   transition: transform 1s ease-out;
   transform: scale(0);
@@ -15,7 +15,7 @@
   margin: 0;
   padding: 0;
   color: white;
-  font-size: clamp(2rem, 8vh, 3.5rem);
+  font-size: clamp(0.9rem, 5vh, 2.5rem);
   color: var(--green);
   text-shadow: 0 4px 8px #000;
 }
@@ -28,7 +28,7 @@
 }
 .start-page .difficulties button {
   font-size: clamp(10px, 3.65vw, 28px);
-  padding: min(14px, 2vw) min(18px, 2.8vw);
+  padding: min(12px, 1.8vw) min(14px, 2.2vw);
   border-radius: 8px;
 
   color: black;
