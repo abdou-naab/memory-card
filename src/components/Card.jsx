@@ -1,5 +1,6 @@
 import { useState, useEffect, useRef } from "react";
 import "../styles/Card.css";
+import { isMobile } from "react-device-detect";
 // import { setClickedValue, resetClickedValue } from "../helpers";
 
 export default function Card({ hero, onclick }) {
@@ -12,15 +13,20 @@ export default function Card({ hero, onclick }) {
 
   const tiltToMouse = (e) => {
     const bounds = cardRef.current.getBoundingClientRect();
-    const mouseX = e.clientX;
-    const mouseY = e.clientY;
-    const center = {
-      x: mouseX - bounds.x - bounds.width / 2,
-      y: mouseY - bounds.y - bounds.height / 2,
-    };
-    const distance = Math.sqrt(center.x ** 2 + center.y ** 2);
-    setTiltStyle({
-      transform: `
+    let mouseX, mouseY;
+    if (isMobile) {
+      mouseX = e.touches[0].clientX;
+      mouseY = e.touches[0].clientY;
+    } else {
+      mouseX = e.clientX;
+      mouseY = e.clientY;
+      const center = {
+        x: mouseX - bounds.x - bounds.width / 2,
+        y: mouseY - bounds.y - bounds.height / 2,
+      };
+      const distance = Math.sqrt(center.x ** 2 + center.y ** 2);
+      setTiltStyle({
+        transform: `
                 rotate3d(
                     ${center.y / 100},
                         ${-center.x / 100},
@@ -28,7 +34,7 @@ export default function Card({ hero, onclick }) {
                         ${Math.log(distance) * 3.9}deg
                 )
                 `,
-      background: `
+        background: `
                 radial-gradient(
                     circle at
                     ${center.x * 2 + bounds.width / 2}px
@@ -37,37 +43,52 @@ export default function Card({ hero, onclick }) {
                     #0000000c
                 )
                 `,
-    });
+      });
+    }
   };
-
   useEffect(() => {
     const card = cardRef.current;
     const cardGlow = cardRef.current.querySelector(".card-glow ");
     cardRef.current.style.transitionDuration = "";
     const handleMouseEnter = () => {
-      card.addEventListener("mousemove", (e) => {
-        tiltToMouse(e);
-      });
+      if (!isMobile) card.addEventListener("mousemove", (e) => tiltToMouse(e));
+      else card.addEventListener("touchmove", (e) => tiltToMouse(e));
     };
     const handleTiltMouseLeave = () => {
-      card.removeEventListener("mousemove", tiltToMouse);
+      if (!isMobile)
+        card.removeEventListener("mousemove", (e) => tiltToMouse(e));
+      else card.removeEventListener("touchmove", (e) => tiltToMouse(e));
       setTiltStyle({ ...tiltStyle, transform: "" });
     };
     const handleGlowMouseLeave = () => {
-      card.removeEventListener("mousemove", tiltToMouse);
+      if (!isMobile) card.removeEventListener("mousemove", tiltToMouse);
+      else card.removeEventListener("touchmove", tiltToMouse);
       setTiltStyle({ ...tiltStyle, background: "" });
     };
 
-    card.addEventListener("mouseenter", handleMouseEnter);
-    card.addEventListener("mouseleave", handleTiltMouseLeave);
-    cardGlow.addEventListener("mouseleave", handleGlowMouseLeave);
+    if (isMobile) {
+      card.addEventListener("touchstart", handleMouseEnter);
+      card.addEventListener("touchend", handleTiltMouseLeave);
+      cardGlow.addEventListener("touchend", handleGlowMouseLeave);
+    } else {
+      card.addEventListener("mouseenter", handleMouseEnter);
+      card.addEventListener("mouseleave", handleTiltMouseLeave);
+      cardGlow.addEventListener("mouseleave", handleGlowMouseLeave);
+    }
 
     return () => {
-      card.removeEventListener("mouseenter", handleMouseEnter);
-      card.removeEventListener("mouseleave", handleTiltMouseLeave);
-      cardGlow.removeEventListener("mouseleave", handleGlowMouseLeave);
+      if (isMobile) {
+        card.removeEventListener("touchstart", handleMouseEnter);
+        card.removeEventListener("touchend", handleTiltMouseLeave);
+        cardGlow.removeEventListener("touchend", handleGlowMouseLeave);
+      } else {
+        card.removeEventListener("mouseenter", handleMouseEnter);
+        card.removeEventListener("mouseleave", handleTiltMouseLeave);
+        cardGlow.removeEventListener("mouseleave", handleGlowMouseLeave);
+      }
     };
   }, []);
+
   const [bgPos, setBgPos] = useState("");
   useEffect(() => {
     setBgPos(
