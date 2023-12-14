@@ -15,7 +15,10 @@ function App() {
   const [score, setScore] = useState({ current: 0, best: 0 });
   const [gameStarted, setGameStarted] = useState(false);
   const [GPKey, setGPKey] = useState(Math.random().toString(36).substring(2));
-
+  console.log(
+    "inside the ap component , and gameStarted state is working ? :",
+    gameStarted
+  );
   const [volume, setVolume] = useState(() => {
     let hmc_volume = localStorage.getItem("hmc_volume");
     if (hmc_volume) return JSON.parse(hmc_volume);
@@ -52,6 +55,7 @@ function App() {
   }, [anasheed, currentNasheed]);
 
   useEffect(() => {
+    console.log("%cgame started", "color:red; font-size:1rem");
     window.addEventListener("load", () =>
       setTimeout(() => setLoaded(true), 1300)
     );
