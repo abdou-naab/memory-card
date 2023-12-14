@@ -1,5 +1,4 @@
 import "./App.css";
-import bgVideo from "./assets/bg.mp4";
 import Footer from "./components/Footer";
 import StartPage from "./components/Start";
 import GamePage from "./components/Game.jsx";
@@ -104,13 +103,6 @@ function App() {
         setVolume={setVolume}
         setAnasheed={setAnasheed}
       />
-      <video
-        id="bg-video"
-        src={bgVideo}
-        autoPlay
-        loop={!gameStarted}
-        muted
-      ></video>
       <audio id="nasheed" autoPlay></audio>
     </>
   );
