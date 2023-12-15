@@ -44,8 +44,21 @@
   flex-wrap: wrap;
   justify-content: center;
 }
-@media (max-width: 370px) {
+@media (max-width: 390px) {
   .game-page .score {
     font-size: 1.3rem;
+  }
+  .game-page main {
+    margin: 8px 0 4px;
+    padding: 0 20px;
+    gap: 4px;
+  }
+  .game-page main .cards-container {
+    gap: 1rem;
+  }
+}
+@media (max-width: 360px) {
+  .game-page .score {
+    font-size: 14px;
   }
 }

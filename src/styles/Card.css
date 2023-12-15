@@ -71,8 +71,3 @@
     width: max(25.5vw, 128px);
   }
 }
-@media (max-width: 1260px) {
-  .card-container {
-    width: 168px;
-  }
-}

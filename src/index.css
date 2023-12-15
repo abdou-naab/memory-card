@@ -54,4 +54,6 @@ body {
   grid-template-rows: 9fr 1fr;
   min-height: 100dvh;
   font-family: "Marhey", system-ui, -apple-system, Oxygen, sans-serif;
+
+  position: relative;
 }
