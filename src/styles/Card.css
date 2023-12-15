@@ -73,4 +73,7 @@
   .card-container .card-content .front span {
     font-size: 12px;
   }
+  .end-message .restart {
+    font-size: 0.9 rem;
+  }
 }
