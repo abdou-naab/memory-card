@@ -18,7 +18,6 @@ export default function Card({ hero, onclick }) {
     if (isMobile) {
       mouseX = e.touches[0].clientX;
       mouseY = e.touches[0].clientY;
-      console.log("we are at :", mouseX, " - ", mouseY);
     } else {
       mouseX = e.clientX;
       mouseY = e.clientY;
@@ -49,8 +48,6 @@ export default function Card({ hero, onclick }) {
     });
   };
   useEffect(() => {
-    console.log("isMobile", isMobile);
-
     const card = cardRef.current;
     const cardGlow = cardRef.current.querySelector(".card-glow ");
     cardRef.current.style.transitionDuration = "";

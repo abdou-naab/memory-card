@@ -41,24 +41,24 @@ export default function Footer({
         <div className="sounds">
           <button onClick={() => handleClick(volume, setVolume)}>
             {volume ? (
-              <Icon path={mdiVolumeHigh} size={0.9} title="volume on" />
+              <Icon path={mdiVolumeHigh} size={0.9} title="الصوت مفعل" />
             ) : (
-              <Icon path={mdiVolumeMute} size={0.9} title="volume muted" />
+              <Icon path={mdiVolumeMute} size={0.9} title="كتم الصوت" />
             )}
           </button>
           <button onClick={() => handleClick(anasheed, setAnasheed)}>
             {anasheed ? (
-              <Icon path={mdiMusic} size={0.9} title="music on" />
+              <Icon path={mdiMusic} size={0.9} title="تشغيل الأناشيد" />
             ) : (
-              <Icon path={mdiMusicOff} size={0.9} title="music off" />
+              <Icon path={mdiMusicOff} size={0.9} title="أناشيد صامتة" />
             )}
           </button>
         </div>
         <button onClick={() => handleClick(help, setHelp)}>
           {!help ? (
-            <Icon path={mdiHelp} size={0.9} title="open help" />
+            <Icon path={mdiHelp} size={0.9} title="مساعدة" />
           ) : (
-            <Icon path={mdiWindowClose} size={0.9} title="close help" />
+            <Icon path={mdiWindowClose} size={0.9} title="مساعدة" />
           )}
         </button>
       </footer>

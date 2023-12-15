@@ -107,7 +107,6 @@ export default function GamePage({
     if (!clickPermission) return;
     setClickPermission(false);
     if (!clickedCardsIds.includes(cardRef.current.dataset.id)) {
-      console.log(cardRef.current.dataset.name, "  have just been clicked.");
       setClickedCardsIds([...clickedCardsIds, cardRef.current.dataset.id]);
       setClickedValue(cardRef.current.dataset.id, true);
       if (level.total == score.current + 1) {
