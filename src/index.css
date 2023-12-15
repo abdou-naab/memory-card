@@ -51,7 +51,7 @@ body {
 }
 #root {
   display: grid;
-  grid-template-rows: 9fr 1fr;
+  grid-template-rows: 10.5fr 1fr;
   min-height: 100dvh;
   font-family: "Marhey", system-ui, -apple-system, Oxygen, sans-serif;
 
